@@ -35,8 +35,8 @@ df_outlier_removal = df_numeric[list(non_binary.columns)]
 df_outlier_removal = df_outlier_removal[(np.abs(stats.zscore(df_outlier_removal)) < 3).all(axis=1)]
 df_binary = df_numeric.drop(columns=list(df_outlier_removal.columns))
 df_outlier = df_outlier_removal.merge(df_binary, left_index=True, right_index=True, how='inner').reset_index(drop=True)
-X_outlier = df_outlier.drop(columns='Laatste vraagprijs')
-y_outlier = df_outlier['Laatste vraagprijs']
+X_outlier = df_outlier.drop(columns='Price')
+y_outlier = df_outlier['Price']
 
 train_X, valid_X, test_X, train_y, test_y, valid_y, column_names = splitting_data(X_outlier, y_outlier)
 train_X, valid_X, test_X = scale_data(StandardScaler(), train_X, valid_X, test_X, column_names)
