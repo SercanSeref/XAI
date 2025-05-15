@@ -54,11 +54,11 @@ xgb_shap, xgb_lime = get_explainers()
 st.set_page_config(page_title="Housing Price Explanation", layout="wide")
 st.title("🏠 Housing Price Explanation Dashboard")
 
-sample_idx = st.sidebar.slider("Select a sample index", 0, len(test_X)-1, 0)
+sample_idx = st.sidebar.slider("Select a random house", 0, len(test_X)-1, 0)
 X_sample = test_X.iloc[[sample_idx]]
 
 # =========================== Feature Overview ===========================
-with st.expander("📌 Selected Index - Feature Overview (Original Values)", expanded=True):
+with st.expander("📌 Selected House - Feature Overview (Original Values)", expanded=False):
     X_sample_original = X_outlier.iloc[[sample_idx]].T
     X_sample_original.columns = ['Original Value']
     X_sample_original.index.name = 'Feature'
@@ -66,7 +66,7 @@ with st.expander("📌 Selected Index - Feature Overview (Original Values)", exp
     st.dataframe(
         X_sample_original.style.format(precision=2),
         use_container_width=True,
-        height=200
+        height=200,
     )
 
 
@@ -108,7 +108,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.header("🧠 Explanation Comparison for XGBRegressor")
+# st.header("🧠 Explanation Comparison for XGBRegressor")
 
 col1, col2 = st.columns(2)
 
@@ -133,7 +133,7 @@ with col1:
     <h5>📈 Waterfall Plot 
     <span class="tooltip">ℹ️
         <span class="tooltiptext">
-        This waterfall plot shows how much each feature contributes to the final prediction for this specific sample.
+        Breaks down a single prediction to show how each feature pushed the value up or down, step by step.
         </span>
     </span>
     </h5>
@@ -146,8 +146,7 @@ with col1:
     <h5>📊 SHAP Summary Plot (entire test set) 
     <span class="tooltip">ℹ️
         <span class="tooltiptext">
-        This summary plot shows how all features contribute across the test set, sorted by importance. The color indicates feature value.
-        </span>
+        Shows how important each feature is across all predictions. Red means the feature value was high, blue means it was low. Features are sorted by how much they influenced the model.
     </span>
     </h5>
     """, unsafe_allow_html=True)
@@ -165,7 +164,7 @@ with col2:
         <h4 style='color: #ff7f0e;'>🟠 LIME Explanation 
         <span class="tooltip">ℹ️
             <span class="tooltiptext">
-            LIME explains the prediction by approximating the model locally with an interpretable linear model.
+            LIME builds a simple model around one prediction to explain it. It shows which features mattered most for that specific case.
             </span>
         </span>
         </h4>
@@ -177,7 +176,7 @@ with col2:
     <h5>📋 LIME Feature Impact 
     <span class="tooltip">ℹ️
         <span class="tooltiptext">
-        The LIME explanation shows how local feature conditions influence the prediction of this specific sample.
+        Shows which features mattered most for this prediction by fitting a simple model around just this case.
         </span>
     </span>
     </h5>
