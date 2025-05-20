@@ -164,7 +164,7 @@ with col2:
         <h4 style='color: #ff7f0e;'>🟠 LIME Explanation 
         <span class="tooltip">ℹ️
             <span class="tooltiptext">
-            LIME builds a simple model around one prediction to explain it. It shows which features mattered most for that specific case.
+            LIME explains a prediction by testing small changes to the input and seeing how the result changes. It highlights the features that had the biggest impact on this specific prediction.
             </span>
         </span>
         </h4>
